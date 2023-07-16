@@ -31,4 +31,5 @@ secrets.h
 .pio
 .vscode
 
-
+*.log
+*.lck
