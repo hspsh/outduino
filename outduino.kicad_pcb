@@ -325,7 +325,7 @@
     (property "ki_description" "Solder Jumper, 3-pole, open")
     (property "ki_keywords" "Solder Jumper SPDT")
     (path "/edf6cbd3-6472-4b62-b1b5-5e1984eb548f")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "JP3" (at 0.725 -1.775 90) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp afc8e045-4812-47fb-8756-71a4c962b832)
@@ -620,9 +620,9 @@
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp ae3674af-860d-4008-87e0-2e597fe6a510))
     (fp_line (start 2.25 1.6) (end -2.25 1.6)
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 0b067eef-63e7-4b79-ba3b-415c3efbbcf6))
-    (pad "1" smd roundrect (at -2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.222222)
+    (pad "1" smd roundrect (at -2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2222222222)
       (net 65 "Net-(Q6-D)") (pintype "passive") (tstamp c883f49e-8348-4270-a236-4983a7c8af1f))
-    (pad "2" smd roundrect (at 2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.222222)
+    (pad "2" smd roundrect (at 2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2222222222)
       (net 89 "/IO_block2/PWR_BANK") (pintype "passive") (tstamp d554170a-72ed-450c-a3d4-282d5d1c564f))
     (model "${KICAD6_3DMODEL_DIR}/Fuse.3dshapes/Fuse_1812_4532Metric.wrl"
       (offset (xyz 0 0 0))
@@ -710,7 +710,7 @@
     (property "ki_description" "Solder Jumper, 2-pole, open")
     (property "ki_keywords" "solder jumper SPST")
     (path "/40d4b0e8-6cfd-435a-8f74-f2fe9017bc35/06f3bdd2-0fbe-41fb-87e2-83561e8670a6")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "JP14" (at 0 -1.8) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp ed95c328-f053-4925-aa3f-afd4e3c47cd8)
@@ -776,7 +776,7 @@
     (property "ki_description" "Solder Jumper, 2-pole, open")
     (property "ki_keywords" "solder jumper SPST")
     (path "/685b7cd5-9b79-4035-8e43-8cb1ee28e98f/b3811f0d-e444-4f95-9af6-9b8708947dd5")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "JP8" (at 0 -1.8) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 970d9e55-d558-4527-a00d-681a8fab7e0d)
@@ -841,7 +841,7 @@
     (property "ki_description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
     (property "ki_keywords" "connector")
     (path "/685b7cd5-9b79-4035-8e43-8cb1ee28e98f/f1779ea0-ba3a-4e9d-a5f4-ccfecb12aa6d")
-    (attr through_hole)
+    (attr through_hole exclude_from_bom)
     (fp_text reference "J7" (at 7.6 -4.8 180) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 94a7356e-206f-4c93-bd6f-90a3a8dc6e31)
@@ -1067,7 +1067,7 @@
     (property "Sheetfile" "outduino.kicad_sch")
     (property "Sheetname" "")
     (path "/fce7bf59-3b31-41aa-832e-433d6685ed9c")
-    (attr through_hole)
+    (attr through_hole exclude_from_pos_files exclude_from_bom)
     (fp_text reference "U1" (at 0 -6.35 180 unlocked) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp aa9f1cfb-e138-4e90-8d4e-78e723cd6c52)
@@ -1372,7 +1372,7 @@
     (property "ki_description" "Mounting Hole with connection")
     (property "ki_keywords" "mounting hole")
     (path "/bbcd59f8-22c0-4232-bf99-5ff91be7199e")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "H3" (at 0 -4.2 90) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 92c5878f-6d79-487b-9fd0-15304331c545)
@@ -1851,9 +1851,9 @@
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 6396fad5-debf-4b96-b198-c04e1ed60bb9))
     (fp_line (start 1.6 0.8) (end -1.6 0.8)
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 53d58050-51f6-4174-b603-b7ff2ed1b464))
-    (pad "1" smd roundrect (at -1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.192308)
+    (pad "1" smd roundrect (at -1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.1923076923)
       (net 93 "/IO_block1/GND_BANK") (pintype "passive") (tstamp 092d26e2-ab20-42ea-88a1-933db53709aa))
-    (pad "2" smd roundrect (at 1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.192308)
+    (pad "2" smd roundrect (at 1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.1923076923)
       (net 2 "GND") (pintype "passive") (tstamp 25cd3da6-865b-4509-876c-466f30c0f910))
     (model "${KICAD6_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_1206_3216Metric.wrl"
       (offset (xyz 0 0 0))
@@ -2267,7 +2267,7 @@
     (property "ki_description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
     (property "ki_keywords" "connector")
     (path "/40d4b0e8-6cfd-435a-8f74-f2fe9017bc35/f1779ea0-ba3a-4e9d-a5f4-ccfecb12aa6d")
-    (attr through_hole)
+    (attr through_hole exclude_from_bom)
     (fp_text reference "J9" (at 7.6 -4.8 180) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp f6c96ca6-9ee8-4d21-afcf-1e8e328cde7d)
@@ -2587,9 +2587,9 @@
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 0e0ddd3c-9cf4-4452-b558-fdf22067b8a4))
     (fp_line (start 1.6 0.8) (end -1.6 0.8)
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp d66d26ce-feef-4859-b45f-02a81ef1938c))
-    (pad "1" smd roundrect (at -1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.192308)
+    (pad "1" smd roundrect (at -1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.1923076923)
       (net 99 "/IO_block4/GND_BANK") (pintype "passive") (tstamp 77b574dc-963b-4a39-9f02-d4655671b6d3))
-    (pad "2" smd roundrect (at 1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.192308)
+    (pad "2" smd roundrect (at 1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.1923076923)
       (net 2 "GND") (pintype "passive") (tstamp 93d6d1b3-9207-4de1-a3ad-3dbb2cac0e60))
     (model "${KICAD6_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_1206_3216Metric.wrl"
       (offset (xyz 0 0 0))
@@ -2782,7 +2782,7 @@
     (property "ki_description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
     (property "ki_keywords" "connector")
     (path "/be643d91-f2c3-4dd7-a04f-9cfd75f1562d/f1779ea0-ba3a-4e9d-a5f4-ccfecb12aa6d")
-    (attr through_hole)
+    (attr through_hole exclude_from_bom)
     (fp_text reference "J5" (at 7.6 -4.8 180) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 09929d20-6e47-4391-9b0f-1014e88d20b6)
@@ -3166,9 +3166,9 @@
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 7e6b2709-b68f-4fab-8dcb-603feb73f33c))
     (fp_line (start 2.25 1.6) (end -2.25 1.6)
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 82505e66-c4eb-4f60-821e-750a1b38b1eb))
-    (pad "1" smd roundrect (at -2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.222222)
+    (pad "1" smd roundrect (at -2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2222222222)
       (net 37 "Net-(Q3-D)") (pintype "passive") (tstamp 7af7ef87-58b3-4caa-8648-89c17d0f8937))
-    (pad "2" smd roundrect (at 2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.222222)
+    (pad "2" smd roundrect (at 2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2222222222)
       (net 88 "/IO_block1/PWR_BANK") (pintype "passive") (tstamp e5fc7d3b-8d7c-4563-8d27-ddfc11d81b00))
     (model "${KICAD6_3DMODEL_DIR}/Fuse.3dshapes/Fuse_1812_4532Metric.wrl"
       (offset (xyz 0 0 0))
@@ -3187,7 +3187,7 @@
     (property "ki_description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
     (property "ki_keywords" "connector")
     (path "/b3ce9c2e-9bed-4a76-ae07-107df32a9e6e/f1779ea0-ba3a-4e9d-a5f4-ccfecb12aa6d")
-    (attr through_hole)
+    (attr through_hole exclude_from_bom)
     (fp_text reference "J8" (at 7.6 -4.8 180) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp f336568c-13c4-45d5-8b23-592d4f4c10ef)
@@ -3632,9 +3632,9 @@
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 39b6f27f-0d8a-4cde-8fd7-82ba2a08674c))
     (fp_line (start 1.6 0.8) (end -1.6 0.8)
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp c8875c5a-e9c4-43e2-8584-e2a83d4cb0cf))
-    (pad "1" smd roundrect (at -1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.192308)
+    (pad "1" smd roundrect (at -1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.1923076923)
       (net 97 "/IO_block3/GND_BANK") (pintype "passive") (tstamp 4b02963d-1f0a-49e8-b443-410549ce25be))
-    (pad "2" smd roundrect (at 1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.192308)
+    (pad "2" smd roundrect (at 1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.1923076923)
       (net 2 "GND") (pintype "passive") (tstamp 32a325b5-32b8-47ae-98b8-ea53e1ab80bd))
     (model "${KICAD6_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_1206_3216Metric.wrl"
       (offset (xyz 0 0 0))
@@ -4108,9 +4108,9 @@
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 909e0157-acff-4127-944d-9f831c2177f6))
     (fp_line (start 2.25 1.6) (end -2.25 1.6)
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp c763a443-c683-4b1e-9b7b-8b7d0f2890c3))
-    (pad "1" smd roundrect (at -2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.222222)
+    (pad "1" smd roundrect (at -2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2222222222)
       (net 69 "Net-(Q9-D)") (pintype "passive") (tstamp bc5b9cf4-4283-4077-81b6-7bfcd32463f4))
-    (pad "2" smd roundrect (at 2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.222222)
+    (pad "2" smd roundrect (at 2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2222222222)
       (net 90 "/IO_block3/PWR_BANK") (pintype "passive") (tstamp 977b785b-4838-4070-ba92-01c6542c5ea4))
     (model "${KICAD6_3DMODEL_DIR}/Fuse.3dshapes/Fuse_1812_4532Metric.wrl"
       (offset (xyz 0 0 0))
@@ -4237,7 +4237,7 @@
     (property "ki_description" "Solder Jumper, 3-pole, open")
     (property "ki_keywords" "Solder Jumper SPDT")
     (path "/7f6261a3-9008-42b5-9c05-dd57ad558412")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "JP4" (at 0.725 -1.775 90) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp a4c79f57-292b-48c8-9ab7-79ab678ef571)
@@ -4708,7 +4708,7 @@
     (property "ki_description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
     (property "ki_keywords" "connector")
     (path "/c9157e21-5fe3-4267-a6f5-0e61ce13c945")
-    (attr smd)
+    (attr smd exclude_from_bom)
     (fp_text reference "J4" (at 0 -3.98) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 8a2f2864-c934-426f-a9ef-11ef3ab992de)
@@ -4761,8 +4761,8 @@
       (net 21 "/SDA") (pinfunction "Pin_3") (pintype "passive") (tstamp e4d85a68-4590-46ab-a9af-1631c62b2552))
     (pad "4" smd roundrect (at 1.5 -2 180) (size 0.6 1.55) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
       (net 22 "/SCL") (pinfunction "Pin_4") (pintype "passive") (tstamp b5fee986-a274-4f23-976f-2282f6f00519))
-    (pad "MP" smd roundrect (at -2.8 1.875 180) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.208333) (tstamp bf6ece97-9d65-468b-9096-b1c5092e35ef))
-    (pad "MP" smd roundrect (at 2.8 1.875 180) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.208333) (tstamp 8504367b-f001-46b3-8bc6-2807bdf45046))
+    (pad "MP" smd roundrect (at -2.8 1.875 180) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2083333333) (tstamp bf6ece97-9d65-468b-9096-b1c5092e35ef))
+    (pad "MP" smd roundrect (at 2.8 1.875 180) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2083333333) (tstamp 8504367b-f001-46b3-8bc6-2807bdf45046))
     (model "${KICAD6_3DMODEL_DIR}/Connector_JST.3dshapes/JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal.wrl"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
@@ -4944,7 +4944,7 @@
     (property "ki_description" "Generic connector, single row, 01x08, script generated (kicad-library-utils/schlib/autogen/connector/)")
     (property "ki_keywords" "connector")
     (path "/fab81122-6e71-4b89-a2d3-bc920356d5dc")
-    (attr through_hole)
+    (attr through_hole exclude_from_bom)
     (fp_text reference "J10" (at 0 -16.74 90 unlocked) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 7e51c9f0-1025-4493-9d68-88512d055092)
@@ -5272,7 +5272,7 @@
     (property "Sheetname" "")
     (property "ki_description" "2.4 GHz WiFi (802.11 b/g/n) and Bluetooth ® 5 (LE) module Built around ESP32S3 series of SoCs, Xtensa ® dualcore 32bit LX7 microprocessor Flash up to 16 MB, PSRAM up to 8 MB 36 GPIOs, rich set of peripherals Onboard PCB antenna")
     (path "/4ca238f9-fc2a-42e7-9ff5-cd258efd9294")
-    (attr smd)
+    (attr smd exclude_from_bom)
     (fp_text reference "U3" (at 0 -10.95) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp c80a5508-523c-4d90-b60b-95f129882d46)
@@ -5984,7 +5984,7 @@
     (property "ki_description" "Solder Jumper, 2-pole, open")
     (property "ki_keywords" "solder jumper SPST")
     (path "/b3ce9c2e-9bed-4a76-ae07-107df32a9e6e/06f3bdd2-0fbe-41fb-87e2-83561e8670a6")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "JP13" (at 0 -1.8) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 4d6bde07-8e7d-4be6-a250-772dcd8fb0f3)
@@ -6580,7 +6580,7 @@
     (property "ki_description" "Solder Jumper, 2-pole, open")
     (property "ki_keywords" "solder jumper SPST")
     (path "/685b7cd5-9b79-4035-8e43-8cb1ee28e98f/06f3bdd2-0fbe-41fb-87e2-83561e8670a6")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "JP12" (at 0 -1.8) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 35570676-e857-4183-83c2-e6c0f5aebce3)
@@ -6877,7 +6877,7 @@
     (property "ki_description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
     (property "ki_keywords" "connector")
     (path "/ad520e64-69bd-47f2-a539-1937b7068eb0")
-    (attr through_hole)
+    (attr through_hole exclude_from_bom)
     (fp_text reference "J3" (at 2.54 -5.08) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp d87fbd4f-1f9f-4a90-9139-222baed53f85)
@@ -6939,7 +6939,7 @@
     (property "ki_description" "Solder Jumper, 3-pole, open")
     (property "ki_keywords" "Solder Jumper SPDT")
     (path "/8ff401db-01e9-4257-b075-65dd6acd0737")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "JP5" (at 0.725 -1.775 90) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 19c648d7-80cf-458e-9333-41b36f378cef)
@@ -7526,7 +7526,7 @@
     (property "ki_description" "Mounting Hole with connection")
     (property "ki_keywords" "mounting hole")
     (path "/555db96d-8b30-43ab-a806-1b5d9db3b54f")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "H1" (at 0 -4.2) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 10328ee5-634e-48ad-ba1c-c175ead42def)
@@ -7559,7 +7559,7 @@
     (property "ki_description" "Solder Jumper, 3-pole, open")
     (property "ki_keywords" "Solder Jumper SPDT")
     (path "/b6c3cde2-7acd-415f-9381-58543f888c82")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "JP6" (at 0.725 -1.775 90) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 89a1f98f-0858-491b-833b-567b7378f3c4)
@@ -7938,7 +7938,7 @@
     (property "ki_description" "Solder Jumper, 2-pole, open")
     (property "ki_keywords" "solder jumper SPST")
     (path "/be643d91-f2c3-4dd7-a04f-9cfd75f1562d/b3811f0d-e444-4f95-9af6-9b8708947dd5")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "JP7" (at 0 -1.8) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp a5babd20-556d-41c0-980d-f66541d236e1)
@@ -8116,7 +8116,7 @@
     (property "ki_description" "test point")
     (property "ki_keywords" "test point tp")
     (path "/4416286e-74d7-4b77-9370-3e1bf2ccd0a3")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "TP6" (at 0 -1.648) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp ae8b6a3d-914a-4873-9e7e-4272e68ec8b0)
@@ -8367,7 +8367,7 @@
     (property "Sheetfile" "outduino.kicad_sch")
     (property "Sheetname" "")
     (path "/db2e561a-59fd-408c-b4b8-b1e8adc9aac4")
-    (attr through_hole)
+    (attr through_hole exclude_from_bom)
     (fp_text reference "J2" (at 0 -16.74 180 unlocked) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 883d850c-6e71-4457-b6b4-c2ce9b44e86e)
@@ -8713,7 +8713,7 @@
     (property "ki_description" "Solder Jumper, 2-pole, open")
     (property "ki_keywords" "solder jumper SPST")
     (path "/be643d91-f2c3-4dd7-a04f-9cfd75f1562d/06f3bdd2-0fbe-41fb-87e2-83561e8670a6")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "JP11" (at 0 -1.8) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 02de8fe8-6dcf-4125-872c-25163bae31ce)
@@ -8812,9 +8812,9 @@
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp fce42133-9eb9-4187-bd6f-9dd9e5fd023a))
     (fp_line (start 1.6 0.8) (end -1.6 0.8)
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 81c415ec-32c6-4468-afbe-c7356b7f2309))
-    (pad "1" smd roundrect (at -1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.192308)
+    (pad "1" smd roundrect (at -1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.1923076923)
       (net 95 "/IO_block2/GND_BANK") (pintype "passive") (tstamp 4bee0daa-4b3e-46eb-a62f-94c1eac6f86a))
-    (pad "2" smd roundrect (at 1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.192308)
+    (pad "2" smd roundrect (at 1.55 0 90) (size 1.3 1.75) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.1923076923)
       (net 2 "GND") (pintype "passive") (tstamp 1a1e7d2d-5afb-4876-9546-65878149f275))
     (model "${KICAD6_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_1206_3216Metric.wrl"
       (offset (xyz 0 0 0))
@@ -8888,7 +8888,7 @@
     (property "ki_description" "Solder Jumper, 2-pole, open")
     (property "ki_keywords" "solder jumper SPST")
     (path "/b3ce9c2e-9bed-4a76-ae07-107df32a9e6e/b3811f0d-e444-4f95-9af6-9b8708947dd5")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "JP9" (at 0 -1.8) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 25d36547-f905-4cac-b4c6-3e70f8c3e56e)
@@ -9115,7 +9115,7 @@
     (property "ki_description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
     (property "ki_keywords" "connector")
     (path "/bc7109de-7e71-4774-b6c7-829822f8e66f")
-    (attr smd)
+    (attr smd exclude_from_bom)
     (fp_text reference "J6" (at 0 -3.98) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 58d407d4-f836-4213-84c5-bd553101476e)
@@ -9168,8 +9168,8 @@
       (net 21 "/SDA") (pinfunction "Pin_3") (pintype "passive") (tstamp ff37d1bb-19a2-4070-a201-8bbc53040ee4))
     (pad "4" smd roundrect (at 1.5 -2 180) (size 0.6 1.55) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
       (net 22 "/SCL") (pinfunction "Pin_4") (pintype "passive") (tstamp b3739d19-7af9-45ac-80cd-62d7266488a0))
-    (pad "MP" smd roundrect (at -2.8 1.875 180) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.208333) (tstamp eb099527-d6c3-4cc9-9e0e-52c28586362a))
-    (pad "MP" smd roundrect (at 2.8 1.875 180) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.208333) (tstamp ada3e520-0338-4aa2-acf6-0b9533e38a3a))
+    (pad "MP" smd roundrect (at -2.8 1.875 180) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2083333333) (tstamp eb099527-d6c3-4cc9-9e0e-52c28586362a))
+    (pad "MP" smd roundrect (at 2.8 1.875 180) (size 1.2 1.8) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2083333333) (tstamp ada3e520-0338-4aa2-acf6-0b9533e38a3a))
     (model "${KICAD6_3DMODEL_DIR}/Connector_JST.3dshapes/JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal.wrl"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
@@ -9960,7 +9960,7 @@
     (property "ki_description" "test point")
     (property "ki_keywords" "test point tp")
     (path "/d7d36a21-4c67-41df-a51a-0f5bb66ab7ad")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "TP4" (at 0 -1.448) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 7b1c8595-168f-49fb-a041-4ad62366ac1f)
@@ -10191,9 +10191,9 @@
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 29b7f082-3c15-4fcc-82d4-fb5a993fa052))
     (fp_line (start 2.25 1.6) (end -2.25 1.6)
       (stroke (width 0.1) (type solid)) (layer "F.Fab") (tstamp 6b4bb3d5-ad1f-4d22-ac82-7848e77591e2))
-    (pad "1" smd roundrect (at -2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.222222)
+    (pad "1" smd roundrect (at -2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2222222222)
       (net 70 "Net-(Q12-D)") (pintype "passive") (tstamp 84b3ac26-f0bb-4980-9e58-59e01acd663b))
-    (pad "2" smd roundrect (at 2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.222222)
+    (pad "2" smd roundrect (at 2.1375 0 180) (size 1.125 3.4) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.2222222222)
       (net 91 "/IO_block4/PWR_BANK") (pintype "passive") (tstamp 3efc739c-0103-41e6-be7b-fe3d5705591c))
     (model "${KICAD6_3DMODEL_DIR}/Fuse.3dshapes/Fuse_1812_4532Metric.wrl"
       (offset (xyz 0 0 0))
@@ -10379,7 +10379,7 @@
     (property "ki_description" "Solder Jumper, 2-pole, open")
     (property "ki_keywords" "solder jumper SPST")
     (path "/40d4b0e8-6cfd-435a-8f74-f2fe9017bc35/b3811f0d-e444-4f95-9af6-9b8708947dd5")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "JP10" (at 0 -1.8) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 478d8ecc-9ccc-4575-b555-ba9c48d135fb)
@@ -10616,7 +10616,7 @@
     (property "ki_description" "test point")
     (property "ki_keywords" "test point tp")
     (path "/5818903a-4e93-4fe0-b769-66cc1361c760")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "TP5" (at 0 1.448) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp b23e1f6d-afd4-4f0e-8957-241b7b63fe7c)
@@ -10648,7 +10648,7 @@
     (property "ki_description" "test point")
     (property "ki_keywords" "test point tp")
     (path "/a618c200-25d7-4f23-b30c-fab897c734bc")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "TP1" (at 0 1.448 90) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 585d04f7-5e3e-469c-a593-41c246028402)
@@ -10680,7 +10680,7 @@
     (property "ki_description" "test point")
     (property "ki_keywords" "test point tp")
     (path "/72257a98-dc33-4c96-be98-a91914e50b76")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "TP3" (at 0 1.448 90) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp ec3867a5-4f88-4447-b438-e0d42a450d35)
@@ -10712,7 +10712,7 @@
     (property "ki_description" "test point")
     (property "ki_keywords" "test point tp")
     (path "/40a4215a-5e57-48cd-b21c-9c689b7e0b00")
-    (attr exclude_from_pos_files)
+    (attr exclude_from_pos_files exclude_from_bom)
     (fp_text reference "TP2" (at 0 1.448 90) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 67d6d798-1fd0-45f1-bb92-3240316a6fb9)
