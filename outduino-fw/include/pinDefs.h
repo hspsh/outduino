@@ -24,8 +24,8 @@
 #define CURR4 1
 
 #define BOOT_B1 0
-#define B2 9
-#define B3 10
+#define PIN_B2 9
+#define PIN_B3 10
 
 
 #define SDA 6
