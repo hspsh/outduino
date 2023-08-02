@@ -8,17 +8,14 @@
 
 #include <alfalog.h>
 
+#include <main.h>
+
 QueueHandle_t event_msg_queue = NULL;
 
 TwoWire i2c = TwoWire(0);
-OledLogger display = OledLogger(i2c);
-SerialLogger serialLogger = SerialLogger(&Serial);
+OledLogger display = OledLogger(i2c, OLED_128x64, LOG_INFO);
+SerialLogger serialLogger = SerialLogger(&Serial, LOG_DEBUG);
 
-void serialTask( void * parameter );
-void printTimestampOnPress(int input_num, long unsigned int timestamp);
-void send_io_evt(int input_num);
-void outduino_log(const std::string& msg);
-void init_pins();
 
 void bootloop_on_button_press(int pin_num){
   if (digitalRead(pin_num)==LOW){
@@ -30,17 +27,25 @@ void bootloop_on_button_press(int pin_num){
   }
 }
 
-typedef struct {
-  int input_num;
-  long unsigned int timestamp;
-} outduino_evt_t;
+// I hate c++
+// I'll move to a better library at some point
+void outduino_cb_1(){ send_io_evt(1);}
+void outduino_cb_2(){ send_io_evt(2);}
+void outduino_cb_3(){ send_io_evt(3);}
+void outduino_cb_4(){ send_io_evt(4);}
 
+const std::array<outduino_bank_t, 4> banks = {{
+  {PWR1, IN1, OUT1, CURR1, &outduino_cb_1},
+  {PWR2, IN2, OUT2, CURR2, &outduino_cb_2},
+  {PWR3, IN3, OUT3, CURR3, &outduino_cb_3},
+  {PWR4, IN4, OUT4, CURR4, &outduino_cb_4}
+}};
 
 void setup() {
-  init_pins();
+  init_pins(banks);
 
   Serial.begin(115200);
-  Serial.setTxTimeoutMs(0); 
+  Serial.setTxTimeoutMs(0); // prevent logger slowdown when no usb connected
   Serial.println("begin...");
   bootloop_on_button_press(PIN_B2);
 
@@ -50,7 +55,7 @@ void setup() {
   AlfaLogger.addBackend(&serialLogger);
   AlfaLogger.begin();
 
-  ALOG("display started");
+  ALOGI("display started");
 
   event_msg_queue = xQueueCreate( 10, sizeof( outduino_evt_t ) );  
   xTaskCreate( serialTask, "serial task",
@@ -60,6 +65,7 @@ void setup() {
 void send_io_evt(int input_num){
   outduino_evt_t evt = {
     .input_num = input_num,
+    .is_high = digitalRead(banks[input_num-1].pin_inp),
     .timestamp = millis()
   };
   xQueueSendFromISR(event_msg_queue, &evt, NULL);
@@ -70,9 +76,14 @@ void serialTask( void * parameter ) {
   outduino_evt_t evt;
   while(1){
     if(xQueueReceive(event_msg_queue, &evt, 1000/portTICK_PERIOD_MS) == pdTRUE){
-      ALOG("Input {} pressed at {}ms", evt.input_num, evt.timestamp);
+      ALOGI("Input {} pressed at {}ms", evt.input_num, evt.timestamp);
+      Serial.println(
+        fmt::format(
+          "<I{}{} T{}>",
+          evt.input_num, evt.is_high?"H":"L", evt.timestamp)
+        .c_str());
     } else {
-      ALOG("time {}", millis());
+      ALOGD("time {}", millis());
     }
   }
 }
@@ -83,46 +94,31 @@ void loop() {
     usleep(100000);
 }
 
-void init_pins(){
+void init_pins(std::array<outduino_bank_t, 4> banks){
   //inilialize pins as input 
-  pinMode(IN1, INPUT);
-  pinMode(IN2, INPUT);
-  pinMode(IN3, INPUT);
-  pinMode(IN4, INPUT);
+
+  for(int i=0; i<banks.size(); i++){
+    pinMode(banks[i].pin_pwr, OUTPUT);
+    pinMode(banks[i].pin_inp, INPUT);
+    pinMode(banks[i].pin_out, OUTPUT);
+    pinMode(banks[i].pin_curr, ANALOG);
+
+    digitalWrite(banks[i].pin_pwr, LOW); //turn off by default
+    digitalWrite(banks[i].pin_out, HIGH); //turn off by default
+
+    attachInterrupt(
+      banks[i].pin_inp,
+      banks[i].isr_callback,
+      CHANGE);
+  }
 
   pinMode(BOOT_B1, INPUT);
   pinMode(PIN_B2, INPUT_PULLUP);
   pinMode(PIN_B3, INPUT_PULLUP);
 
-  //inilialize pins as output
-  pinMode(OUT1, OUTPUT);
-  pinMode(OUT2, OUTPUT);
-  pinMode(OUT3, OUTPUT);
-  pinMode(OUT4, OUTPUT);
-
-  pinMode(PWR1, OUTPUT);
-  pinMode(PWR2, OUTPUT);
-  pinMode(PWR3, OUTPUT);
-  pinMode(PWR4, OUTPUT);
-
-  digitalWrite(PWR1, HIGH);
-  digitalWrite(PWR2, HIGH);
-  digitalWrite(PWR3, HIGH);
-  digitalWrite(PWR4, HIGH);
-
-  digitalWrite(OUT1, HIGH);
-  digitalWrite(OUT2, HIGH);
-  digitalWrite(OUT3, HIGH);
-  digitalWrite(OUT4, HIGH);  
-
-  //initialize pins as analog input
-  pinMode(CURR1, INPUT);
-  pinMode(CURR2, INPUT);
-  pinMode(CURR3, INPUT);
-  pinMode(CURR4, INPUT);
 
   // attach interrupts to input pins
-  attachInterrupt(IN1,[]{send_io_evt(IN1);}, RISING);
+  
   attachInterrupt(IN2,[]{send_io_evt(IN2);}, RISING);
   attachInterrupt(IN3,[]{send_io_evt(IN3);}, RISING);
   attachInterrupt(IN4,[]{send_io_evt(IN4);}, RISING);
