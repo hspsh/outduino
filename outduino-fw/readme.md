@@ -1,2 +1,1 @@
-
-replace `B1` to `BOOL1` in fmt library to aviod name collisions with esp32 arudino core
+esptool.py --chip ESP32-S3 merge_bin -o merged-flash.bin --flash_size=keep 0x00000 bootloader.bin 0x8000 partitions.bin 0xe000 ~/.platformio/packages/framework-arduinoespressif32/tools/partitions/boot_app0.bin 0x10000 firmware.bin

@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <pinDefs.h>
 
+#undef B1
+
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
@@ -13,7 +15,7 @@
 QueueHandle_t event_msg_queue = NULL;
 
 TwoWire i2c = TwoWire(0);
-OledLogger display = OledLogger(i2c, OLED_128x64, LOG_INFO);
+OledLogger display = OledLogger(i2c, OLED_128x32, LOG_INFO);
 SerialLogger serialLogger = SerialLogger(&Serial, LOG_DEBUG);
 
 
@@ -29,10 +31,11 @@ void bootloop_on_button_press(int pin_num){
 
 // I hate c++
 // I'll move to a better library at some point
-void outduino_cb_1(){ send_io_evt(1);}
-void outduino_cb_2(){ send_io_evt(2);}
-void outduino_cb_3(){ send_io_evt(3);}
-void outduino_cb_4(){ send_io_evt(4);}
+void outduino_cb_1(){ send_io_evt(IN1);}
+void outduino_cb_2(){ send_io_evt(IN2);}
+void outduino_cb_3(){ send_io_evt(IN3);}
+void outduino_cb_4(){ send_io_evt(IN4);}
+void outduino_cb_B2(){ send_io_evt(PIN_B2);}
 
 const std::array<outduino_bank_t, 4> banks = {{
   {PWR1, IN1, OUT1, CURR1, &outduino_cb_1},
@@ -47,7 +50,7 @@ void setup() {
   Serial.begin(115200);
   Serial.setTxTimeoutMs(0); // prevent logger slowdown when no usb connected
   Serial.println("begin...");
-  bootloop_on_button_press(PIN_B2);
+  // bootloop_on_button_press(PIN_B2);
 
   i2c.begin(SDA, SCL, 100000);
 
@@ -57,17 +60,30 @@ void setup() {
 
   ALOGI("display started");
 
+  for (auto &b: banks){
+    digitalWrite(b.pin_pwr, HIGH);
+  }
+
   event_msg_queue = xQueueCreate( 10, sizeof( outduino_evt_t ) );  
   xTaskCreate( serialTask, "serial task",
   3000, NULL, 2, NULL );
 }
 
 void send_io_evt(int input_num){
+  static long int last_evt = 0;
   outduino_evt_t evt = {
     .input_num = input_num,
-    .is_high = digitalRead(banks[input_num-1].pin_inp),
+    .is_high = digitalRead(input_num),
     .timestamp = millis()
   };
+  if ((last_evt+100) > millis()){
+    return;
+  }
+  last_evt = millis();
+  
+  if(event_msg_queue == NULL){
+    return;
+  }
   xQueueSendFromISR(event_msg_queue, &evt, NULL);
 }
 
@@ -76,7 +92,12 @@ void serialTask( void * parameter ) {
   outduino_evt_t evt;
   while(1){
     if(xQueueReceive(event_msg_queue, &evt, 1000/portTICK_PERIOD_MS) == pdTRUE){
-      ALOGI("Input {} pressed at {}ms", evt.input_num, evt.timestamp);
+      ALOGI(
+        "Input {} {} at {}ms", 
+        evt.input_num,
+        evt.is_high?"pressed":"released",
+        evt.timestamp
+      );
       Serial.println(
         fmt::format(
           "<I{}{} T{}>",
@@ -90,7 +111,7 @@ void serialTask( void * parameter ) {
 
 
 void loop() {
-    handle_io_pattern(PWR1,PATTERN_HBEAT);
+    handle_io_pattern(OUT3,PATTERN_HBEAT);
     usleep(100000);
 }
 
@@ -116,10 +137,5 @@ void init_pins(std::array<outduino_bank_t, 4> banks){
   pinMode(PIN_B2, INPUT_PULLUP);
   pinMode(PIN_B3, INPUT_PULLUP);
 
-
-  // attach interrupts to input pins
-  
-  attachInterrupt(IN2,[]{send_io_evt(IN2);}, RISING);
-  attachInterrupt(IN3,[]{send_io_evt(IN3);}, RISING);
-  attachInterrupt(IN4,[]{send_io_evt(IN4);}, RISING);
+  attachInterrupt(PIN_B2, outduino_cb_B2, CHANGE);
 }
