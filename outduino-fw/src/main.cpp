@@ -1,141 +1,181 @@
 #include <Arduino.h>
-#include <pinDefs.h>
-
-#undef B1
+#undef B1 //try to comment out this line to see something funny
 
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <commonFwUtils.h>
+#include <Button2.h>
 
 #include <alfalog.h>
+#include <commonFwUtils.h>
 
 #include <main.h>
+#include <pinDefs.h>
 
-QueueHandle_t event_msg_queue = NULL;
+
+QueueHandle_t eventMsgQueue = NULL;
+TimerHandle_t debounceTimer = NULL;
+
+void SerialReceiveTask( void * parameter );
+void EvtDigestTask( void * parameter );
 
 TwoWire i2c = TwoWire(0);
-OledLogger display = OledLogger(i2c, OLED_128x32, LOG_INFO);
-SerialLogger serialLogger = SerialLogger(&Serial, LOG_DEBUG);
 
+std::vector<OutduinoBank> banks = {{
+  OutduinoBank(PWR1, IN1, OUT1, CURR1, ISR_FOR_PIN_BANK(IN1, 1)),
+  OutduinoBank(PWR2, IN2, OUT2, CURR2, ISR_FOR_PIN_BANK(IN2, 2)),
+  OutduinoBank(PWR3, IN3, OUT3, CURR3, ISR_FOR_PIN_BANK(IN3, 3)),
+  OutduinoBank(PWR4, IN4, OUT4, CURR4, ISR_FOR_PIN_BANK(IN4, 4))
+}};
 
-void bootloop_on_button_press(int pin_num){
-  if (digitalRead(pin_num)==LOW){
-    Serial.println("enter bootloop");
-    while (1) {
-      Serial.print(".");
-      delay(1000);
-    }
+void uartPrintAlogHandle(const char* str){
+  Serial.println(str);
+}
+
+void sendIoEvt(const cringeEvtContainer_t *p_evt){
+  if(eventMsgQueue != NULL){
+    xQueueSendFromISR(eventMsgQueue, p_evt, 0);
   }
 }
 
-// I hate c++
-// I'll move to a better library at some point
-void outduino_cb_1(){ send_io_evt(IN1);}
-void outduino_cb_2(){ send_io_evt(IN2);}
-void outduino_cb_3(){ send_io_evt(IN3);}
-void outduino_cb_4(){ send_io_evt(IN4);}
-void outduino_cb_B2(){ send_io_evt(PIN_B2);}
+void outduinoPinIsrHandle(const int pin, const int bank){
+  cringeEvtContainer_t evt;
+  evt.type = CRINGE_EVT_TYPE_INPUT;
+  evt.inputEvt = {
+    .input_num = bank,
+    .is_high = digitalRead(pin) != LOW,
+    .timestamp = millis()
+  };
+  sendIoEvt(&evt);
+}
 
-const std::array<outduino_bank_t, 4> banks = {{
-  {PWR1, IN1, OUT1, CURR1, &outduino_cb_1},
-  {PWR2, IN2, OUT2, CURR2, &outduino_cb_2},
-  {PWR3, IN3, OUT3, CURR3, &outduino_cb_3},
-  {PWR4, IN4, OUT4, CURR4, &outduino_cb_4}
-}};
+OledLogger display = OledLogger(i2c, OLED_128x32, LOG_INFO);
+SerialLogger serialLogger = SerialLogger(uartPrintAlogHandle, LOG_DEBUG);
+Button2 userButton = Button2();
 
-void setup() {
-  init_pins(banks);
-
+void setup() {  
   Serial.begin(115200);
   Serial.setTxTimeoutMs(0); // prevent logger slowdown when no usb connected
   Serial.println("begin...");
-  // bootloop_on_button_press(PIN_B2);
+  // delay(3000);
+  // bootloopOnButtonPress(PIN_B2);
 
   i2c.begin(SDA, SCL, 100000);
 
   AlfaLogger.addBackend(&display);
   AlfaLogger.addBackend(&serialLogger);
   AlfaLogger.begin();
-
   ALOGI("display started");
+  for (auto &b: scan_i2c(i2c)){
+    ALOGI("i2c device found at 0x{:02x}", b);
+  }
+  initPins(banks);
 
   for (auto &b: banks){
     digitalWrite(b.pin_pwr, HIGH);
   }
 
-  event_msg_queue = xQueueCreate( 10, sizeof( outduino_evt_t ) );  
-  xTaskCreate( serialTask, "serial task",
-  3000, NULL, 2, NULL );
+  userButton.begin(PIN_B2, INPUT_PULLUP, false);
+  userButton.setTapHandler([](Button2 & b){
+    cringeEvtContainer_t evt;
+    evt.type = CRINGE_EVT_TYPE_INPUT;
+    evt.inputEvt = {
+      .input_num = PIN_B2,
+      .is_high = digitalRead(PIN_B2) != LOW,
+      .timestamp = millis()
+    };
+    sendIoEvt(&evt);
+  });
+
+  eventMsgQueue = xQueueCreate( 10, sizeof( cringeEvtContainer_t ) );  
+  xTaskCreate( EvtDigestTask, "EvtDigestTask",
+    3000, NULL, 2, NULL );
+
+  xTaskCreate( SerialReceiveTask, "serial task",
+    3000, NULL, 2, NULL );
 }
 
-void send_io_evt(int input_num){
-  static long int last_evt = 0;
-  outduino_evt_t evt = {
-    .input_num = input_num,
-    .is_high = digitalRead(input_num),
-    .timestamp = millis()
-  };
-  if ((last_evt+100) > millis()){
-    return;
-  }
-  last_evt = millis();
-  
-  if(event_msg_queue == NULL){
-    return;
-  }
-  xQueueSendFromISR(event_msg_queue, &evt, NULL);
-}
+#define OUTDUINO_ECHO_SERIAL
+void parseSerialEvent(const std::vector<char> buf){
+  if (buf.size() < 3){
+    #ifdef OUTDUINO_ECHO_SERIAL
+      Serial.println();
+    #endif
+  } else {
+    if (buf.front() == '<' && buf.back() == '>'){
+      std::string cmd(buf.begin()+1, buf.end()-1);
 
+      cringeEvtContainer_t evt;
+      evt.type = CRINGE_EVT_TYPE_SERIAL;
+      strncpy(evt.serialEvt.cmd, cmd.c_str(), sizeof(evt.serialEvt.cmd));
 
-void serialTask( void * parameter ) {
-  outduino_evt_t evt;
-  while(1){
-    if(xQueueReceive(event_msg_queue, &evt, 1000/portTICK_PERIOD_MS) == pdTRUE){
-      ALOGI(
-        "Input {} {} at {}ms", 
-        evt.input_num,
-        evt.is_high?"pressed":"released",
-        evt.timestamp
-      );
-      Serial.println(
-        fmt::format(
-          "<I{}{} T{}>",
-          evt.input_num, evt.is_high?"H":"L", evt.timestamp)
-        .c_str());
-    } else {
-      ALOGD("time {}", millis());
+      if(eventMsgQueue != NULL){
+        xQueueSend(eventMsgQueue, &evt, 0);
+      }
     }
   }
 }
 
+void SerialReceiveTask( void * parameter ) {
+  std::vector<char> buf;
+  while(1){
+    while (Serial.available()) {
+      char c = Serial.read();
+      
+      switch (c){
+        case '\r': 
+        #ifdef OUTDUINO_ECHO_SERIAL
+          Serial.print('\r');  //echo if character accepted
+        #endif
+        break;
+        case '\n': {
+          parseSerialEvent(buf);
+          buf.clear();
+          break;
+        }
+        default: {
+          if(buf.size() <= 16){
+            buf.push_back(c);
+            #ifdef OUTDUINO_ECHO_SERIAL
+              Serial.print(c);  //echo if character accepted
+            #endif
+          }
+        }
+      }
+    }
+    vTaskDelay(100/portTICK_PERIOD_MS);
+  }
+}
+
+void EvtDigestTask( void * parameter ) {
+  cringeEvtContainer_t evt;
+  while(1){
+    if(xQueueReceive(eventMsgQueue, &evt, 1000/portTICK_PERIOD_MS) == pdTRUE){
+      ALOGI(evt.to_string().c_str());
+      Serial.println(
+        fmt::format(
+          "<I{}{} T{}>",
+          evt.inputEvt.input_num, evt.inputEvt.is_high?"H":"L", evt.inputEvt.timestamp)
+        .c_str());
+    } else {
+      // ALOGD("time {}", millis());
+    }
+  }
+}
 
 void loop() {
     handle_io_pattern(OUT3,PATTERN_HBEAT);
-    usleep(100000);
+    userButton.loop();
+    vTaskDelay(50/portTICK_PERIOD_MS);
 }
 
-void init_pins(std::array<outduino_bank_t, 4> banks){
-  //inilialize pins as input 
+void initPins(std::vector<OutduinoBank> banks){
+  OutduinoBank::setEvtHandle(outduinoPinIsrHandle);
 
-  for(int i=0; i<banks.size(); i++){
-    pinMode(banks[i].pin_pwr, OUTPUT);
-    pinMode(banks[i].pin_inp, INPUT);
-    pinMode(banks[i].pin_out, OUTPUT);
-    pinMode(banks[i].pin_curr, ANALOG);
-
-    digitalWrite(banks[i].pin_pwr, LOW); //turn off by default
-    digitalWrite(banks[i].pin_out, HIGH); //turn off by default
-
-    attachInterrupt(
-      banks[i].pin_inp,
-      banks[i].isr_callback,
-      CHANGE);
+  for(auto &b: banks){
+    b.init();
   }
 
   pinMode(BOOT_B1, INPUT);
-  pinMode(PIN_B2, INPUT_PULLUP);
   pinMode(PIN_B3, INPUT_PULLUP);
-
-  attachInterrupt(PIN_B2, outduino_cb_B2, CHANGE);
 }
