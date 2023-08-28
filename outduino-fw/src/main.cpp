@@ -6,12 +6,16 @@
 #include <Adafruit_SSD1306.h>
 #include <Button2.h>
 
+#include <fmt/ranges.h>
 #include <alfalog.h>
+#include "advancedOledLogger.h"
+
 #include <commonFwUtils.h>
 
 #include <main.h>
 #include <pinDefs.h>
 
+#define FW_REV "0.9.9"
 
 QueueHandle_t eventMsgQueue = NULL;
 TimerHandle_t debounceTimer = NULL;
@@ -49,7 +53,7 @@ void outduinoPinIsrHandle(const int pin, const int bank){
   sendIoEvt(&evt);
 }
 
-OledLogger display = OledLogger(i2c, OLED_128x32, LOG_INFO);
+AdvancedOledLogger aOledLogger = AdvancedOledLogger(i2c, LOG_INFO, OLED_128x64);
 SerialLogger serialLogger = SerialLogger(uartPrintAlogHandle, LOG_DEBUG);
 Button2 userButton = Button2();
 
@@ -59,20 +63,21 @@ void setup() {
   Serial.println("begin...");
   // delay(3000);
   // bootloopOnButtonPress(PIN_B2);
-
   i2c.begin(SDA, SCL, 100000);
 
-  AlfaLogger.addBackend(&display);
+  AlfaLogger.addBackend(&aOledLogger);
   AlfaLogger.addBackend(&serialLogger);
   AlfaLogger.begin();
   ALOGI("display started");
-  for (auto &b: scan_i2c(i2c)){
-    ALOGI("i2c device found at 0x{:02x}", b);
-  }
-  initPins(banks);
+  aOledLogger.setTopBarText(BAR_CUSTOM, "NinjaTimer r. " FW_REV);
+
+  // ALOGI(
+  //   "i2c device found at 0x{:02x}", 
+  //   fmt::join(scan_i2c(i2c), ", 0x"));
+  // initPins(banks);
 
   for (auto &b: banks){
-    digitalWrite(b.pin_pwr, HIGH);
+    b.setPower(PWR_ON);
   }
 
   userButton.begin(PIN_B2, INPUT_PULLUP, false);
@@ -134,7 +139,7 @@ void SerialReceiveTask( void * parameter ) {
           break;
         }
         default: {
-          if(buf.size() <= 16){
+          if(buf.size() <= 32){
             buf.push_back(c);
             #ifdef OUTDUINO_ECHO_SERIAL
               Serial.print(c);  //echo if character accepted
@@ -147,16 +152,56 @@ void SerialReceiveTask( void * parameter ) {
   }
 }
 
+void serialAction(cringeEvtContainer_t& evt){
+  //frick off chatgpt wrote this
+  if (strncmp(evt.serialEvt.cmd, "set", 3) == 0){
+    int bank = atoi(evt.serialEvt.cmd+3);
+    if (bank > 0 && bank <= banks.size()){
+      banks[bank-1].setOutput(OUT_HI);
+    }
+  } else if (strncmp(evt.serialEvt.cmd, "clr", 3) == 0){
+    int bank = atoi(evt.serialEvt.cmd+3);
+    if (bank > 0 && bank <= banks.size()){
+      banks[bank-1].setOutput(OUT_LO);
+    }
+  } else if (strncmp(evt.serialEvt.cmd, "on", 2) == 0){
+    int bank = atoi(evt.serialEvt.cmd+2);
+    if (bank > 0 && bank <= banks.size()){
+      banks[bank-1].setPower(PWR_ON);
+    }
+  } else if (strncmp(evt.serialEvt.cmd, "off", 3) == 0){
+    int bank = atoi(evt.serialEvt.cmd+3);
+    if (bank > 0 && bank <= banks.size()){
+      banks[bank-1].setPower(PWR_OFF);
+    }
+  } else if (strncmp(evt.serialEvt.cmd, "status", 6) == 0){
+    for (auto &b: banks){
+      ALOGR(b.to_string().c_str());
+    }
+  } else if (strncmp(evt.serialEvt.cmd, "help", 4) == 0){
+    ALOGR("set1 - set bank 1");
+    ALOGR("clr1 - clr bank 1");
+    ALOGR("toggle1 - toggle bank 1");
+    ALOGR("status - show status of all banks");
+  } else if (strncmp(evt.serialEvt.cmd, "view", 4) == 0){
+    aOledLogger.setTopBarText(BAR_CUSTOM, std::string(evt.serialEvt.cmd+4));
+  } else if (strncmp(evt.serialEvt.cmd, "log", 3) == 0){
+    ALOGI("{}", evt.serialEvt.cmd+3);
+  }
+}
+
 void EvtDigestTask( void * parameter ) {
   cringeEvtContainer_t evt;
   while(1){
     if(xQueueReceive(eventMsgQueue, &evt, 1000/portTICK_PERIOD_MS) == pdTRUE){
-      ALOGI(evt.to_string().c_str());
-      Serial.println(
-        fmt::format(
-          "<I{}{} T{}>",
-          evt.inputEvt.input_num, evt.inputEvt.is_high?"H":"L", evt.inputEvt.timestamp)
-        .c_str());
+      
+      if(evt.type == CRINGE_EVT_TYPE_INPUT){
+        Serial.println(evt.serialize().c_str());
+      } else if (evt.type == CRINGE_EVT_TYPE_SERIAL){
+        ALOGD(evt.to_string().c_str());
+        serialAction(evt);
+      }     
+
     } else {
       // ALOGD("time {}", millis());
     }
@@ -167,6 +212,11 @@ void loop() {
     handle_io_pattern(OUT3,PATTERN_HBEAT);
     userButton.loop();
     vTaskDelay(50/portTICK_PERIOD_MS);
+
+    static int counter = 0;
+    if (counter++ % 8 == 0){
+      aOledLogger.redraw();
+    }
 }
 
 void initPins(std::vector<OutduinoBank> banks){
