@@ -15,7 +15,7 @@
 #include <main.h>
 #include <pinDefs.h>
 
-#define FW_REV "0.9.9"
+#define FW_REV "0.1.0"
 
 QueueHandle_t eventMsgQueue = NULL;
 TimerHandle_t debounceTimer = NULL;
