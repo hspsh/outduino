@@ -7,6 +7,7 @@ The core requirements of the projects were - create a device that would:
 * Register inputs from large switches, on very long cables
 * Flash LED outputs.
 
+![alt text](chronowarrior.png)
 
 At first we considered adding some I/O buffer circuitry to raspberry pi, but we decided that a cheaper and more reliable version (if not the more interesting one!) would consist of a Dell Wyse 3040 hidden inside a case, and having a standalone, overengineered, ESP-based IO module drive and read Inputs/Outputs. This is how Outduino was made.
 
@@ -32,6 +33,8 @@ In future, the board could've been made to work wirelessly. There's even a footp
 ## Thank yous
 
 Thank you LiquidLemon, not7cd, for inviting me to the project.
+
+[Project website](https://hsp.sh/chronowarrior)
 
 ## License
 
