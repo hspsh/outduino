@@ -7,9 +7,12 @@ The core requirements of the projects were - create a device that would:
 * Register inputs from large switches, on very long cables
 * Flash LED outputs.
 
-![alt text](chronowarrior.png)
+![alt text](img/img1.jpg)
 
 At first we considered adding some I/O buffer circuitry to raspberry pi, but we decided that a cheaper and more reliable version (if not the more interesting one!) would consist of a Dell Wyse 3040 hidden inside a case, and having a standalone, overengineered, ESP-based IO module drive and read Inputs/Outputs. This is how Outduino was made.
+
+![alt text](img/img2.jpg)
+
 
 ## I/O block
 
@@ -17,7 +20,7 @@ The device contains 4 overengineered blocks of I/O. These should be able to hand
 
 As I'm writing this, the year is 2026, I'm 3 years wiser, and I'd probably go full galvanic isolation for both input (optocoupler) and output (something like B0505S isolated converter).
 
-![alt text](outduino-IO_block1.svg)
+![alt text](img/outduino-IO_block1.svg)
 
 
 ## ESP32
@@ -28,11 +31,18 @@ This part worked well.
 
 In future, the board could've been made to work wirelessly. There's even a footprint for CC1101 sub-ghz wireless IC connection. These functionalities were never added to the firmware.
 
-![alt text](outduino.svg)
+![alt text](img/outduino.svg)
 
 ## Thank yous
 
 Thank you LiquidLemon, not7cd, for inviting me to the project.
+
+![alt text](img/img3.jpg)
+![alt text](img/img4.jpg)
+![alt text](img/img5.jpg)
+
+
+![alt text](img/chronowarrior.png)
 
 [Project website](https://hsp.sh/chronowarrior)
 
